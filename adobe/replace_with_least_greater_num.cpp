@@ -1,3 +1,12 @@
+/* http://www.careercup.com/question?id=5726537143812096
+
+Write a program to replace each element of an array with a number present on the right side of the element such that the number is least greater than the element. If there is no greater number replace it with -1 
+
+e.g : 8, 58, 71, 18, 31, 32, 63, 92, 43, 3, 91, 93, 25, 80, 28 
+ans : 18, 63, 80, 25, 32, 43, 80, 93, 80, 25, 93, -1, 28, -1, -
+
+ */
+
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
