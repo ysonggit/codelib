@@ -95,8 +95,10 @@ int main(){
   // deallocate 2d array memory
   for(int i=0; i<rows; i++){
     delete [] screen[i];
+    screen[i] = NULL;
   }
   delete [] screen;
+  screen = NULL;
 
   return 0;
 }
