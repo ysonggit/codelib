@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -43,9 +44,9 @@ int getHeight(const vector<Box>& boxstack){
 }
 
 
-// method of CCI book, the input bottom is supposed to be the largest box in given boxes
+// naive method of CCI book, the input bottom is supposed to be the largest box in given boxes
 vector<Box> createStack(const vector<Box>& allboxes, Box bottom){
-    int max_height = 0.0;
+    int max_height = 0;
     vector<Box> max_stack;
     for(auto i = allboxes.begin(); i!=allboxes.end(); ++i){
 	if(bottom > (*i) ){
@@ -60,6 +61,31 @@ vector<Box> createStack(const vector<Box>& allboxes, Box bottom){
     }
     // base case
     // insert bottom box to the max_stack
+    max_stack.push_back(bottom);
+    return max_stack;
+}
+
+// optimized method with DP
+vector<Box> createStackDP(const vector<Box>& allboxes, Box bottom,  map<Box, vector<Box> >& cachedboxstack){
+    int max_height = 0;
+    vector<Box> max_stack;
+    for(auto it=allboxes.begin(); it!=allboxes.end(); ++it){
+	int new_height;
+	vector<Box> new_stack;
+	if(cachedboxstack.find(*it) == cachedboxstack.end()){
+	    if(bottom > (*it)){
+		new_stack = createStackDP(allboxes, *it, cachedboxstack);
+		cachedboxstack.insert(map<Box, vector<Box> >::value_type(*it, new_stack));
+	    }
+	}else{
+	    new_stack = (cachedboxstack.find(*it))->second;
+	}
+	new_height = getHeight(new_stack);
+	if(new_height > max_height){
+	    max_height = new_height;
+	    max_stack = new_stack;
+	}
+    }
     max_stack.push_back(bottom);
     return max_stack;
 }
@@ -102,5 +128,10 @@ int main(){
     cout<<"Maximum Stack Height : "<<getHeight(boxstack)<<endl;
     cout<<"\n-----------------------"<<endl;
     cout<<"Max Stack Height : "<<getMaxStackHeight(allboxes)<<endl;
+    map<Box, vector<Box> > cachedboxstack;
+    vector<Box> bs = createStackDP(allboxes, b4, cachedboxstack);
+    cout<<"\n~~~~~~~~~~~~~~~~~~~~~~~\n";
+    cout<<"Max stack height (DP version)"<<getHeight(bs)<<endl;
+    
     return 0;
 }
