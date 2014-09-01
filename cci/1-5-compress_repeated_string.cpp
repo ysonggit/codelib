@@ -5,7 +5,7 @@
 using namespace std;
 
 // given a string aabcccdddd determine the repeatation and
-// compress to a2bc3d4
+// compress to a2b1c3d4
 // it the compressed lenght is not shorter than the original length,
 // then should return the original one
 
