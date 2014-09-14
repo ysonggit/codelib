@@ -33,19 +33,28 @@ struct MailBox{
 class Member{
 public:
     Member(int i, string s, shared_ptr<MailBox> p);
+    Member(int, string, MailBox &);
     int uid;
     string name;
     shared_ptr<MailBox> ptr_mbox;
     Mail createMail(string, string);
+    void dropMail(Mail);
     void dropMail(Mail, MailBox&);
     void openMail(int);
     void openMail(int, MailBox &);
+    MailBox *ptr;
 };
 
 Member::Member(int i, string s, shared_ptr<MailBox> p){
     uid = i;
     name = s;
-    ptr_mbox = p;
+    ptr_mbox = make_shared<MailBox>(*p);
+}
+
+Member::Member(int i, string s, MailBox & mb){
+    uid = i;
+    name = s;
+    ptr  = &mb;
 }
 
 Mail Member::createMail(string target, string info){
@@ -60,9 +69,13 @@ void Member::dropMail(Mail m, MailBox & mb){
     mb.mails[uid] = m;
 }
 
+void Member::dropMail(Mail m){
+    (*ptr).mails[uid] = m;
+}
+
 // open user X 's mail in the mailbox
 void Member::openMail(int x){
-    Mail m = (*ptr_mbox.get()).mails[x];
+    Mail m = (*ptr).mails[x];
     cout<<"User "<<name<<" opens mail from "<<m.sender<<endl;
     cout<<m<<endl;
 }
@@ -91,12 +104,13 @@ public:
 	    cout<<"======================================="<<endl;
 	}
     }
+    shared_ptr<MailBox> p_mbox;
 };
 
 
 Group::Group(int n) : number_users(n){
     mbox.date = 1;
-    shared_ptr<MailBox> _ptr_mbox = make_shared<MailBox>(mbox);
+    p_mbox = make_shared<MailBox>(mbox);
     //cout<<(*_ptr_mbox).date<<endl;
     for(int i=0; i<n; i++){
 	// convert int ascii to char
@@ -106,7 +120,8 @@ Group::Group(int n) : number_users(n){
 	ss<<c;
 	string uname;
 	ss>>uname;
-	Member m(i, uname, _ptr_mbox);
+	//Member m(i, uname, p_mbox);
+	Member m(i, uname, mbox);
 	users.insert(map<int, Member>::value_type(i, m));
     }
 }
@@ -119,9 +134,13 @@ int main(){
     user1.dropMail(m1, A.mbox);
     A.showMails();
     Member user5 = A.users.find(5)->second;
-    user5.ptr_mbox = make_shared<MailBox>(A.mbox);
+    //user5.ptr_mbox = make_shared<MailBox>(A.mbox);
     user5.openMail(1);
     //user5.openMail(1, A.mbox); 
+    Member user6 = A.users.find(6)->second;
+    Mail m6 = user6.createMail("Jane", "Love you");
+    user6.dropMail(m6);
+    user5.openMail(6);
     
     return 0;
 }
