@@ -8,7 +8,12 @@
 using namespace std;
 
 struct Mail{
-    //Mail(string s, string c, string r) : sender(s), content(c), receiver(r){ }
+    Mail(){ }
+    Mail(string s, string c, string r) {
+	sender = s;
+	content = c;
+	receiver = r;
+    }
     string sender;
     string content;
     string receiver;
@@ -32,11 +37,11 @@ struct MailBox{
 
 class Member{
 public:
-    Member(int i, string s, shared_ptr<MailBox> p);
+    Member(int i, string s, shared_ptr<MailBox>& p);
     Member(int, string, MailBox &);
     int uid;
     string name;
-    shared_ptr<MailBox> ptr_mbox;
+    weak_ptr<MailBox> wp_mbox;
     Mail createMail(string, string);
     void dropMail(Mail);
     void dropMail(Mail, MailBox&);
@@ -45,10 +50,11 @@ public:
     MailBox *ptr;
 };
 
-Member::Member(int i, string s, shared_ptr<MailBox> p){
+Member::Member(int i, string s, shared_ptr<MailBox>& p){
     uid = i;
     name = s;
-    ptr_mbox = make_shared<MailBox>(*p);
+    wp_mbox = p; // p owns the memory
+    
 }
 
 Member::Member(int i, string s, MailBox & mb){
@@ -70,12 +76,18 @@ void Member::dropMail(Mail m, MailBox & mb){
 }
 
 void Member::dropMail(Mail m){
-    (*ptr).mails[uid] = m;
+    ///(*ptr).mails[uid] = m; // works
+    shared_ptr<MailBox> ptr_2 = wp_mbox.lock(); // now p and ptr_2 own the memory
+    if(ptr_2) {// ptr_2 is initialized from a weak pointer, so make sure to check memory exists or not
+	// not working using this way
+	ptr_2->mails.insert(map<int, Mail>::value_type(uid, m));
+    }
 }
 
 // open user X 's mail in the mailbox
 void Member::openMail(int x){
-    Mail m = (*ptr).mails[x];
+    Mail m = (*ptr).mails[x]; //works
+    //Mail m = (*wp_mbox).mails[x];
     cout<<"User "<<name<<" opens mail from "<<m.sender<<endl;
     cout<<m<<endl;
 }
@@ -110,8 +122,9 @@ public:
 
 Group::Group(int n) : number_users(n){
     mbox.date = 1;
+    mbox.mails[0] = Mail(string("A"), string("I am A"), string("ALL"));
     p_mbox = make_shared<MailBox>(mbox);
-    //cout<<(*_ptr_mbox).date<<endl;
+    // fail to write to mbox using p_mbox->mails[0] = ....
     for(int i=0; i<n; i++){
 	// convert int ascii to char
 	char c = i+65;
@@ -120,8 +133,8 @@ Group::Group(int n) : number_users(n){
 	ss<<c;
 	string uname;
 	ss>>uname;
-	//Member m(i, uname, p_mbox);
-	Member m(i, uname, mbox);
+	Member m(i, uname, p_mbox);
+	//Member m(i, uname, mbox); // works
 	users.insert(map<int, Member>::value_type(i, m));
     }
 }
@@ -131,16 +144,17 @@ int main(){
     Group A(N);
     Member user1 = A.users.find(1)->second;
     Mail m1 = user1.createMail("Mike", "hello");
-    user1.dropMail(m1, A.mbox);
-    A.showMails();
-    Member user5 = A.users.find(5)->second;
-    //user5.ptr_mbox = make_shared<MailBox>(A.mbox);
-    user5.openMail(1);
+    user1.dropMail(m1);
+    ///user1.dropMail(m1, A.mbox);
+    //A.showMails();
+    ///Member user5 = A.users.find(5)->second;
+    //user5.wp_mbox = make_shared<MailBox>(A.mbox);
+    /// user5.openMail(1);
     //user5.openMail(1, A.mbox); 
     Member user6 = A.users.find(6)->second;
     Mail m6 = user6.createMail("Jane", "Love you");
     user6.dropMail(m6);
-    user5.openMail(6);
-    
+    ///user5.openMail(6);
+    A.showMails();
     return 0;
 }
