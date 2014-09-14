@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <ostream>
+#include <sstream>
 
 using namespace std;
 
@@ -15,8 +16,8 @@ struct Mail{
 
 ostream & operator<<(ostream & lhs, const Mail & m){
     lhs << " Receiver : " << m.receiver << endl;
-    lhs << " ---------- \n" << m.content << endl;
-    lhs << " -----------\nSender : " << m.sender <<endl;
+    lhs << " ---------- \n " << m.content << endl;
+    lhs << " -----------\n Sender : " << m.sender <<endl;
     return lhs;
 }
 
@@ -36,7 +37,7 @@ public:
     string name;
     shared_ptr<MailBox> ptr_mbox;
     Mail createMail(string, string);
-    void dropMail(Mail);
+    void dropMail(Mail, MailBox&);
 };
 
 Member::Member(int i, string s, shared_ptr<MailBox> p){
@@ -53,8 +54,8 @@ Mail Member::createMail(string target, string info){
     return m;
 }
 
-void Member::dropMail(Mail m){
-    (*ptr_mbox).mails[uid] = m;
+void Member::dropMail(Mail m, MailBox & mb){
+    mb.mails[uid] = m;
 }
 
 // A Group owns serveral members and a post box
@@ -76,12 +77,19 @@ public:
     }
 };
 
+
 Group::Group(int n) : number_users(n){
     mbox.date = 1;
     shared_ptr<MailBox> _ptr_mbox = make_shared<MailBox>(mbox);
     for(int i=0; i<n; i++){
-	string ascii = std::to_string(i+65);
-	Member m(i, ascii, _ptr_mbox);
+	// convert int ascii to char
+	char c = i+65;
+	// convert char to string
+	stringstream ss;
+	ss<<c;
+	string uname;
+	ss>>uname;
+	Member m(i, uname, _ptr_mbox);
 	users.insert(map<int, Member>::value_type(i, m));
     }
 }
@@ -91,7 +99,7 @@ int main(){
     Group A(N);
     Member user1 = A.users.find(1)->second;
     Mail m1 = user1.createMail("Mike", "hello");
-    user1.dropMail(m1);
+    user1.dropMail(m1, A.mbox);
     A.showMails();
     return 0;
 }
