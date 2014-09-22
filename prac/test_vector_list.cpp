@@ -16,5 +16,11 @@ int main(){
 	cout<<j<<" ";
     }
     cout<<endl;
+
+    for(int i=0; i<myvec.size(); i++){
+	for(int j=i+1; j<myvec.size(); j++){
+	    cout<<" pair composed by two elements in myvec : "<<myvec.at(i)<<", "<<myvec.at(j)<<endl;
+	}
+    }
     return 0;
 }
