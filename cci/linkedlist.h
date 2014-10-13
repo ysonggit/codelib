@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <map>
-using namespace std;
+#include <iostream>
 
 struct ListNode{
      ListNode(int d){
@@ -17,6 +17,7 @@ struct LinkedList{
           root = NULL;
      }
      ListNode * root;
+     void print();
      void append(int );
      void removeDups();
 };

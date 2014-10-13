@@ -1,5 +1,17 @@
 #include "linkedlist.h"
 
+void LinkedList::print(){
+    if(root == NULL)
+        return;
+
+    ListNode * tmp = root;
+    while(tmp->next != NULL){
+        std::cout<<tmp->data<<" -> ";
+        tmp = tmp->next;
+    }
+    std::cout<<tmp->data<<std::endl;
+}
+
 void LinkedList::append(int d){
      ListNode * newnode = new ListNode(d);
      if(root == NULL){
@@ -24,12 +36,11 @@ void LinkedList::removeDups(){
     }
     // key is the node.data
     // value is the frequency
-    map<int, int> cache; 
+    std:: map<int, int> cache; 
     // make a copy of root node
     ListNode* tmp = root;
-    cache[root->data] = 1;
     ListNode* pre = NULL;
-    while(tmp->next != NULL){
+    while(tmp != NULL){
         int cur_data = tmp->data;
         if(cache.find(cur_data) != cache.end()){
             // duplicates found, remove it
