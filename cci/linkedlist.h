@@ -20,5 +20,6 @@ struct LinkedList{
      void print();
      void append(int );
      void removeDups();
+     ListNode * nthToLast(int );
 };
 
