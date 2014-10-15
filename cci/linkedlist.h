@@ -17,9 +17,14 @@ struct LinkedList{
           root = NULL;
      }
      ListNode * root;
+     ListNode * at(int );
      void print();
      void append(int );
+     // 2-1
      void removeDups();
+     // 2-2
      ListNode * nthToLast(int );
+     // 2-3
+     void removeNode(ListNode * );
 };
 

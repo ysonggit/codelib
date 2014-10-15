@@ -1,5 +1,19 @@
 #include "linkedlist.h"
 
+// return the nth node in the list
+ListNode * LinkedList::at(int n){
+    ListNode * tmp = root;
+    for(int i=1; i<n; i++){
+	if(tmp->next != NULL){
+	    tmp = tmp->next;
+	}else{
+	    std::cerr<<"List length < "<<n<<std::endl;
+	    return NULL;
+	}
+    }
+    return tmp;
+}
+
 void LinkedList::print(){
     if(root == NULL)
         return;
@@ -75,4 +89,22 @@ ListNode *  LinkedList::nthToLast(int n){
 	p1 = p1->next;
     }
     return p1;
+}
+
+// assume the input is neither head nor tail node
+void LinkedList::removeNode(ListNode * node){
+    if (node == NULL)
+	return ;
+
+    if(node->next != NULL){
+	 // copy next node data to override current node
+	ListNode * next_node = node->next;
+	node->data = next_node->data;
+	node->next = next_node->next;
+	// delete the original next node
+	delete next_node;
+	next_node = NULL;
+    }
+   
+    
 }
