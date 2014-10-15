@@ -11,5 +11,8 @@ int main(){
     ListNode * to_remove = mylist.at(3);
     mylist.removeNode(to_remove);
     mylist.print();
+    ListNode * head = mylist.at(1);
+    mylist.removeNode(head);
+    mylist.print();
     return 0;
 }

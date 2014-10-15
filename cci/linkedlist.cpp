@@ -1,5 +1,16 @@
 #include "linkedlist.h"
 
+bool LinkedList::contains(int i){
+    ListNode * tmp = root;
+    while(tmp != NULL){
+	if(tmp->data == i){
+	    return true;
+	}
+	tmp = tmp->next;
+    }
+    return false;
+}
+
 // return the nth node in the list
 ListNode * LinkedList::at(int n){
     ListNode * tmp = root;

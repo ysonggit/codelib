@@ -18,6 +18,7 @@ struct LinkedList{
      }
      ListNode * root;
      ListNode * at(int );
+     bool contains(int );
      void print();
      void append(int );
      // 2-1
