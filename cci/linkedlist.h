@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <map>
 #include <iostream>
+#include <stack>
 
 struct ListNode{
      ListNode(int d){
@@ -19,7 +20,9 @@ struct LinkedList{
      ListNode * root;
      ListNode * at(int );
      bool contains(int );
+     int length();
      void print();
+     void reversePrint();
      void append(int );
      // 2-1
      void removeDups();

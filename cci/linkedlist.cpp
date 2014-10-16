@@ -25,6 +25,16 @@ ListNode * LinkedList::at(int n){
     return tmp;
 }
 
+int LinkedList::length(){
+    ListNode * tmp = root;
+    int count = 0;
+    while(tmp!= NULL){
+	count++;
+	tmp = tmp->next;
+    }
+    return count;
+}
+
 void LinkedList::print(){
     if(root == NULL)
         return;
@@ -35,6 +45,24 @@ void LinkedList::print(){
         tmp = tmp->next;
     }
     std::cout<<tmp->data<<std::endl;
+}
+
+void LinkedList::reversePrint(){
+    if(root==NULL){
+	std::cout<<"0"<<std::endl;
+	return;
+    }
+    std::stack<int> numstack; 
+    ListNode *tmp = root;
+    while(tmp != NULL){
+	numstack.push(tmp->data);
+	tmp = tmp->next;
+    }
+    while(!numstack.empty()){
+	std::cout<<numstack.top();
+	numstack.pop();
+    }
+    std::cout<<"\n";
 }
 
 void LinkedList::append(int d){
