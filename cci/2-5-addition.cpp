@@ -39,6 +39,11 @@ void addNodes(ListNode * n1, ListNode * n2, BitSum & result){
 // this idea can be used to solve big number addition
 // positive numbers only 
 LinkedList addLists(LinkedList list1, LinkedList list2){
+    cout<<"\n ";
+    list1.reversePrint();
+    cout<<"+";
+    list2.reversePrint();
+    cout<<"=";
     int l1 = list1.length();
     int l2 = list2.length();
     int l = max(l1, l2);
