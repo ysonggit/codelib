@@ -3,7 +3,7 @@
 
 using namespace std;
 
-ListNode * loopBegining(const LinkedList & l){
+ListNode * loopBeginning(const LinkedList & l){
     // 1. Create two pointers, fast and slow
     ListNode * fast = l.root;
     ListNode * slow = fast;
@@ -37,7 +37,7 @@ int main(){
     }
     ListNode * tail = looplist.at(20);
     tail->next = looplist.at(10);
-    ListNode * loopstart = loopBegining(looplist);
-    cout<<"Loop begins at node "<<loopstart->data<<endl;
+    ListNode * loopstart = loopBeginning(looplist);
+    cout<<"Loop Beginning Node.data = "<<loopstart->data<<endl;
     return 0;
 }
