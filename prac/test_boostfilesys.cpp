@@ -8,7 +8,7 @@ namespace fs = boost::filesystem;
 // g++ -std=c++0x test_boostfilesys.cpp -lboost_system -lboost_filesystem
 
 int main(){
-    fs::path p("./");
+    fs::path p("/home/yang/code/formation/HexsqPoseCache/");
     fs::directory_iterator dir_first(p), dir_last;
 
     auto pred = [](const fs::directory_entry& p){
