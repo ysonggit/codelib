@@ -85,7 +85,7 @@ void BinaryTree::printNodes(int branchLen, int nodeSpaceLen, int startLen, int n
     deque<Node*>::const_iterator iter = nodes_queue.begin();
     for(int i=0; i<nodesInThisLevel; i++, iter++){
 	Node * curr_node = *iter;
-	cout<<((i==0)?setw(startLen):setw(nodeSpaceLen)) <<""<<((curr_node && curr_node->left)? setfill('_'): setfill(' '));
+	cout<<((i==0) ? setw(startLen):setw(nodeSpaceLen)) <<""<<((curr_node && curr_node->left)? setfill('_'): setfill(' '));
 	cout<<setw(branchLen+2)<<((curr_node) ? toStr(curr_node->value) : "" );
 	cout<<((curr_node && curr_node->right) ? setfill('_') : setfill(' ')) << setw(branchLen)<<""<<setfill(' ');
     }
@@ -95,7 +95,7 @@ void BinaryTree::printNodes(int branchLen, int nodeSpaceLen, int startLen, int n
 void BinaryTree::printLeaves(int indentSpace, int level, int nodesInThisLevel, const deque<Node*> & nodes_queue){
     //cout<<"print leaves: "<<nodesInThisLevel<<" leaf nodes "<<endl;
     deque<Node*>::const_iterator iter = nodes_queue.begin();
-    for(int i= 0; i<nodesInThisLevel; i++, iter++){
+    for(int i= 0; i< nodesInThisLevel; i++, iter++){
 	Node * curr_node = *iter;
 	cout<< ((i==0) ? setw(indentSpace+2) : setw(2*level+2))<<(curr_node ? toStr(curr_node->value) : ""); 
     }
@@ -112,12 +112,12 @@ void BinaryTree::printTree(int level, int indentSpace){
     // nodeSpaceLen = 2 + (level+1)  * 2^H
     int nodeSpaceLen = 2 + (level + 1) * (int)pow(2, H);
     // starting space to the first node to print of each level (for the left most node of each level only)
-    int startLen = branchLen + (3- level) + indentSpace;
+    int startLen = branchLen + (3-level) + indentSpace;
     // BFS the tree
     deque<Node*> nodes_queue;
     nodes_queue.push_back(root);
     // use for loop to print levels excluding the bottom leaf level
-    for(int r = 0; r < H-1; r++){ 
+    for(int r = 1; r < H; r++){ 
 	printBranches(branchLen, nodeSpaceLen, startLen, nodesInThisLevel, nodes_queue);
 	branchLen = branchLen/2 - 1;
 	nodeSpaceLen = nodeSpaceLen/2 + 1;
@@ -141,11 +141,30 @@ void BinaryTree::printTree(int level, int indentSpace){
     printLeaves(indentSpace, level, nodesInThisLevel, nodes_queue);
 }
 
+void BinaryTree::inOrder(Node * n){
+    if(n==NULL) return ;
+    inOrder(n->left);
+    cout<<n->value<<" ";
+    inOrder(n->right);
+}
+
+void BinaryTree::preOrder(Node *n ){
+    if(n==NULL) return ;
+    cout<<n->value<<" ";
+    preOrder(n->left);
+    preOrder(n->right);
+}
+
+void BinaryTree::postOrder(Node *n){
+    if(n==NULL) return ;
+    postOrder(n->right);
+    postOrder(n->left);
+    cout<<n->value<<" ";
+}
 // recursively delete
 //void BinaryTree::delete(Node * n){
     // if(n != NULL){
     // 	delete(n->left);
-    // 	delete(n->right);
-	
+    // 	delete(n->right);	
     // }
 //}

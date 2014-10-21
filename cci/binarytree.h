@@ -39,17 +39,17 @@ public:
      void printNodes(int, int ,int, int, const deque<Node*> &);
      void printLeaves(int ,int, int, const deque<Node*> &);
      void printTree(int , int);
-     //void delete(Node * );
      // traverse left tree
      // visit root
      // traverse right tree
-     void inOrder();
+     void inOrder(Node *);
      // visit the root
      // traverse left tree
      // traverse right tree
-     void preOrder();
+     void preOrder(Node *);
      // traverse left tree
      // traverse righ tree
      // visit root
-     void postOrder();
+     void postOrder(Node *);
+     //void delete(Node * );
 };

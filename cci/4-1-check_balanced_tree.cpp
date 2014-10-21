@@ -24,7 +24,7 @@ bool isBalanced(Node * n){
 int main(){
     BinaryTree bt;
     int foo[12] ={
-	30, 20, 40, 10, 25, 50, 5, 15, 28, 41, 48, 49
+	30, 20, 40, 10, 25, 50, 5, 15, 28, 41, 48, 60
     };
     for(int i : foo){
 	bt.insert(i);
@@ -36,6 +36,15 @@ int main(){
     }else{
 	cout<< "Tree is unbalanced "<<endl;
     }
-    
+    // test inorder preorder and postorder
+    cout<<"Print the tree in-order: \n";
+    bt.inOrder(bt.root);
+    cout<<endl;
+    cout<<"Print the tree pre-order: \n";
+    bt.preOrder(bt.root);
+    cout<<endl;
+    cout<<"Print the tree post-order: \n";
+    bt.postOrder(bt.root);
+    cout<<endl;
     return 0;
 }
