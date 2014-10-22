@@ -12,7 +12,7 @@ void BinaryTree::insert(int d){
 
 // recursively insert 
 void BinaryTree::insert(Node * newnode, Node * n){
-    if(newnode->value < n->value){
+    if(newnode->value <= n->value){
 	if(n->left == NULL){
 	    n->left = newnode;
 	    return ;
