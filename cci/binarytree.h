@@ -15,10 +15,12 @@ struct Node{
 	  value = d;
 	  left = NULL;
 	  right = NULL;
+	  parent = NULL;
      }
      int value;
      Node * left;
      Node * right;
+     Node * parent;
 };
 
 class BinaryTree{

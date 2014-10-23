@@ -14,7 +14,8 @@ void BinaryTree::insert(int d){
 void BinaryTree::insert(Node * newnode, Node * n){
     if(newnode->value <= n->value){
 	if(n->left == NULL){
-	    n->left = newnode;
+	    newnode->parent = n; 
+	    n->left = newnode;	    
 	    return ;
 	}else{
 	    insert(newnode, n->left);
@@ -22,6 +23,7 @@ void BinaryTree::insert(Node * newnode, Node * n){
     }else{
 	// newnode value is greater than or equal to n's value
 	if(n->right == NULL){
+	    newnode->parent = n;
 	    n->right = newnode;
 	    return ;
 	}else{
@@ -161,6 +163,7 @@ void BinaryTree::postOrder(Node *n){
     postOrder(n->left);
     cout<<n->value<<" ";
 }
+
 // recursively delete
 //void BinaryTree::delete(Node * n){
     // if(n != NULL){
