@@ -3,6 +3,10 @@
 
 using namespace std;
 
+/* Eight queen puzzle algorithm:
+http://en.wikibooks.org/wiki/Algorithm_Implementation/Miscellaneous/N-Queens
+*/
+
 const int N = 8;
 int position[N];
 
