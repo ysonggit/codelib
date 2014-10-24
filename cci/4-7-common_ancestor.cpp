@@ -2,6 +2,15 @@
 
 using namespace std;
 
+
+// returns true if p is descendant of root
+bool inTree(Node * root, Node *p){
+    if (root == NULL || p==NULL) return false;
+    if (root == p ) return true; //base case
+    return inTree(root->left, p) || inTree(root->right, p);
+}
+
+
 // from leetcode.com
 // traverse from bottom to top
 // once we reach a node which matches one of the two nodes,
@@ -10,8 +19,10 @@ using namespace std;
 // if each contain one of the two nodes. (p & q must be on two sides of the ancestor)
 // If yes, then the parent must be the CA and we pass its parent up to the root.
 // If not, we pass the lower node which contains either one of the two nodes (if the left or right subtree contains either p or q), or NULL (if both the left and right subtree does not contain either p or q) up.
+// NOTE, this function works only if the tree contains root, p and q 
 Node * commonAncestor(Node * root, Node * p, Node * q){
     if(root == NULL) return NULL;
+    if(!inTree(root, p) || !inTree(root, q)) return NULL;
     if(p == root || q == root) return root;
     // check if p & q are on the same sides of root
     // root is not null,
@@ -23,7 +34,13 @@ Node * commonAncestor(Node * root, Node * p, Node * q){
 }
 
 void test(Node *root, Node *p, Node *q){
-    cout<<"Common Ancestor of Node ("<<p->value<<") & Node ("<<q->value<<") = ";
+    if(p && q){
+	cout<<"Common Ancestor of Node ("<<p->value<<") & Node ("<<q->value<<") = ";
+    }else{
+	cout<<"Null nodes given, exit\n";
+	return ;
+    }
+       
     Node *ca =  commonAncestor(root, p, q);
     if(ca != NULL){
 	cout<<"("<<ca->value<<")\n";
@@ -60,6 +77,9 @@ int main(){
     test(n1, n3, n4);
     test(n1, n1, n2);
     test(n1, n3, n3);
+    
+    Node * n7 = new Node(7);
+    test(n1, n2, n7);
     test(NULL, NULL, NULL);
     return 0;
 }
