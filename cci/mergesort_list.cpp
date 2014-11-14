@@ -2,18 +2,6 @@
 
 using namespace std;
 
-// get list length
-int listLength(ListNode * head){
-    int length = 0;
-    ListNode * cur = head;
-    while(cur != NULL){
-	cur=cur->next;
-	length++;
-    }
-    return length;
-}
-
-
 void showList(ListNode * n ){
     ListNode *cur = n;
     while(cur != NULL){
@@ -24,7 +12,7 @@ void showList(ListNode * n ){
 }
 
 //http://fisherlei.blogspot.com/2013/12/leetcode-sort-list-solution.html    
-ListNode *mergeList(ListNode *lefthead, ListNode *righthead){
+ListNode *mergeSort(ListNode *lefthead, ListNode *righthead){
     if(lefthead == NULL && righthead == NULL) return NULL;
     if(lefthead == NULL) return righthead;
     if(righthead == NULL) return lefthead;
@@ -32,57 +20,59 @@ ListNode *mergeList(ListNode *lefthead, ListNode *righthead){
     // return mergedhead->next
     ListNode * mergedhead = new ListNode(0); 
     ListNode * cur = mergedhead;
-    while(!lefthead || !righthead){
-	if(!lefthead && !righthead){
-	    // cout<<"sort "<<lefthead->data<<" "<<righthead->data<<endl;
+    while(lefthead != NULL || righthead != NULL){
+	if(lefthead != NULL && righthead != NULL){
 	    if(lefthead->data <= righthead->data){
 		cur->next = lefthead;
+		lefthead = lefthead->next;
 	    }else{
 		cur->next = righthead;
+		righthead = righthead->next;
 	    }
-	}else if(!lefthead){
-	    cur->next = righthead;
-	}else{
+	}else if(lefthead != NULL ){
 	    cur->next = lefthead;
+	    lefthead = lefthead->next;
+	}else{
+	    cur->next = righthead;
+	    righthead = righthead->next;
 	}
 	cur = cur->next;
     }
     return mergedhead->next;
 }
+// split list then merge two heads
+ListNode * merge(ListNode * head){
+    if(head == NULL || head->next == NULL) return head;
+    ListNode * first = head;
+    ListNode * second = head->next;
+    while(second != NULL && second->next != NULL){
+	first = first->next;
+	second = first->next->next;
+    }
+    second = first->next;
+    // break the list
+    first->next = NULL;
+    return mergeSort(merge(head), merge(second));
+}
 
 // merge sort list O(n log n) using O(1) space 
 ListNode *sortList(ListNode *head) {  
     if(!head || !head->next) return head;
-    showList(head);
-    int length = listLength(head);
-    ListNode * cur = head;
-    for(int i=0; i<length/2; i++){
-	if(cur->next != NULL){
-	    cur = cur->next;
-	}else{
-	    cout<<"cur->val = "<<cur->data<<" next = null\n";
-	    return NULL;
-	}
-    }
-    ListNode *righthead = cur->next;
-    cur->next = NULL; // trick: break the list
-    ListNode *lefthead = head;
-    //cout<<"length(right) = "<<listLength(righthead);
-    //cout<<"\tlength(left) = "<<listLength(lefthead)<<endl;
-    righthead = sortList(righthead);
-    lefthead = sortList(lefthead);
-    return mergeList(lefthead, righthead);
-   
+    return  merge(head);
+    cout<<"------------------------\n";
+    
 }
 
 
 int main(){
-    LinkedList mylist;
-    for(int i=4; i>0; i--){
-	mylist.append(i);
-    }
-    
-    ListNode * n = sortList(mylist.root);
+    ListNode * head = new ListNode(4);
+    ListNode * n1 = new ListNode(3);
+    ListNode * n2 = new ListNode(2);
+    ListNode * n3 = new ListNode(1);
+    head->next = n1;
+    n1->next = n2;
+    n2->next = n3;
+    ListNode * n = sortList(head);
     showList(n);
     return 0;
 }
