@@ -12,6 +12,7 @@ void showList(ListNode * n ){
 }
 
 //http://fisherlei.blogspot.com/2013/12/leetcode-sort-list-solution.html    
+/*
 ListNode *mergeSort(ListNode *lefthead, ListNode *righthead){
     if(lefthead == NULL && righthead == NULL) return NULL;
     if(lefthead == NULL) return righthead;
@@ -39,7 +40,21 @@ ListNode *mergeSort(ListNode *lefthead, ListNode *righthead){
 	cur = cur->next;
     }
     return mergedhead->next;
+    }*/
+ListNode * mergeSort(ListNode * left, ListNode * right){
+    if(left== NULL) return right;
+    if(right==NULL) return left;
+    ListNode * mergeHead = NULL;
+    if(left->data <= right->data){
+	mergeHead = left;
+	mergeHead->next = mergeSort(left->next, right);
+    }else{
+	mergeHead = right;
+	mergeHead->next = mergeSort(left, right->next);
+    }
+    return mergeHead;
 }
+
 // split list then merge two heads
 ListNode * merge(ListNode * head){
     if(head == NULL || head->next == NULL) return head;
@@ -52,6 +67,8 @@ ListNode * merge(ListNode * head){
     second = first->next;
     // break the list
     first->next = NULL;
+    // cout<<"Right : ";
+    // showList(second);
     return mergeSort(merge(head), merge(second));
 }
 
@@ -59,8 +76,6 @@ ListNode * merge(ListNode * head){
 ListNode *sortList(ListNode *head) {  
     if(!head || !head->next) return head;
     return  merge(head);
-    cout<<"------------------------\n";
-    
 }
 
 
@@ -69,9 +84,13 @@ int main(){
     ListNode * n1 = new ListNode(3);
     ListNode * n2 = new ListNode(2);
     ListNode * n3 = new ListNode(1);
+    ListNode * n4 = new ListNode(1);
+    ListNode * n5 = new ListNode(2);
     head->next = n1;
     n1->next = n2;
     n2->next = n3;
+    n3->next = n4;
+    n4->next = n5;
     ListNode * n = sortList(head);
     showList(n);
     return 0;
