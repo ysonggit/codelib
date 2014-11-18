@@ -77,7 +77,7 @@ vector<vector<int> > permute(vector<int> &num) {
     return results;
 }
 
-void printAllPermutations(const vector<vector<int> > & all){
+void printAll(const vector<vector<int> > & all){
     for(vector<int> pm : all){
 	for(int i : pm ){
 	    std::cout<<i<<", ";
@@ -85,16 +85,46 @@ void printAllPermutations(const vector<vector<int> > & all){
 	std::cout<<std::endl;
     }
 }
+//Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+
+void dfs(vector<vector<int> >& results, vector<int> & numbers, vector<int> & sol,  int start_idx, int len){
+    if(sol.size()== len){
+	results.push_back(sol);
+	return;
+    }
+    for(int i=start_idx; i<numbers.size(); i++){
+	sol.push_back(numbers[i]);
+	//if(sol.size() < len)
+	    dfs(results, numbers, sol, i+1, len);
+	sol.pop_back();    
+    }
+}
+    
+vector<vector<int> > combine(int n, int k) {
+    vector<vector<int> > results;
+    if(n<1|| k<1 ||k>n) return results;
+    vector<int> numbers; //[1, 2, 3, ..., n]
+    for(int i=1; i<=n; i++){
+	numbers.push_back(i); 
+    }
+    vector<int> sol;
+    dfs(results, numbers, sol, 0, k);
+    return results;
+}
 
 int main(){
   char A[] = "abcd";
   permutation(A, 0, 3); 
   vector<int> B({1,2,3});
   vector<vector<int> > allpermus = permute(B);
-  printAllPermutations(allpermus);
+  printAll(allpermus);
   vector<int> C({0,1});
   vector<vector<int> > allpermus2 = permute(C);
-  printAllPermutations(allpermus2);
+  printAll(allpermus2);
+
+  vector<vector<int> > allcomb1 = combine(4, 2);
+  cout<<allcomb1.size()<<endl;
+  printAll(allcomb1);
   return 0;
 }
 
