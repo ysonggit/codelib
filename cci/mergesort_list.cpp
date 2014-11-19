@@ -59,10 +59,16 @@ ListNode * mergeSort(ListNode * left, ListNode * right){
 ListNode * merge(ListNode * head){
     if(head == NULL || head->next == NULL) return head;
     ListNode * first = head;
+    /*
     ListNode * second = head->next;
     while(second != NULL && second->next != NULL){
 	first = first->next;
 	second = first->next->next;
+	}*/
+    ListNode *second = head;
+    while(second!= NULL && second->next != NULL){
+	first = first->next;
+	second= second->next->next;
     }
     second = first->next;
     // break the list
