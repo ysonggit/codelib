@@ -2,7 +2,7 @@
 
 using namespace std;
 
-
+// g++ -std=c++0x 4-7-common_ancestor.cpp binarytree.cpp
 // returns true if p is descendant of root
 bool inTree(Node * root, Node *p){
     if (root == NULL || p==NULL) return false;
