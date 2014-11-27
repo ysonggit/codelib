@@ -1,9 +1,8 @@
-#include <iostream>
-#include <vector>
-#include <map>
+#include "utils.h"
+
 using namespace std;
 
-bool isValidGroup(vector<char> & line){
+bool isValidGroup(const vector<char> & line){
     map<char, int> cache;
     for(char c : line){
 	if(c!='.'){
@@ -21,7 +20,10 @@ bool isValidSudoku(vector<vector<char> > &board) {
     if(board.size() !=9 || board[0].size()!=9 ) return false;
     // check each row
     for(vector<char> row : board){
-	if(!isValidGroup(row)) return false;
+	if(!isValidGroup(row)){
+	    cout<<"1"<<endl;
+	    return false;
+	}
     }
     // check each column
     for(int i=0; i<9; i++){
@@ -31,19 +33,21 @@ bool isValidSudoku(vector<vector<char> > &board) {
 	    col.push_back(board[c][i]);
 	}
 	if(!isValidGroup(col)){
+	    cout<<"2"<<endl;
 	    return false;
 	}
     }
     // check each sub-grid
-    for(int g=0; g<9; g++){
+    for(int i=0; i<9; i++){
 	// create grid
-	vector<char> grid(9);
-	for(int k=3*g/3; k<3*g/3 +3; k++){ // row idx
-	    for(int j=3*g%3; j < 3*g%3 + 3; j++){//col idx
-		grid.push_back(board[k][j]);
-	    }
+	vector<char> grid;
+	for(int j=0; j<9; j++){
+	    int r = i/3*3+j/3, c = i%3*3+j%3;
+	    grid.push_back(board[r][c]);
 	}
+	
 	if(!isValidGroup(grid)){
+	    printVector(grid);
 	    return false;
 	}
     }
@@ -60,20 +64,15 @@ bool test(vector<vector<char> > &board){
 }
 
 int main(){
-    char board[9][9] ={
-	{".87654321"},
-	{"9........"},
-	{"8........"},
-	{"7........"},
-	{"6........"},
-	{"5........"},
-	{"4........"},
-	{"3........"},
-	{"2........"}
-    };
+    char *a  = "....5..1..4.3..........3..18......2...2.7.....15...........2....2.9.......4......";
     vector<vector<char> > sudoku;
     for(int i=0; i<9; i++){
-	sudoku[i].assign(board[i], 9);
+	vector<char> row;
+	for(int j=0; j<9; j++){
+	    int offset = i * 9 + j;
+	    row.push_back(*(a+offset));	    
+	}
+	sudoku.push_back(row);
     }
     test(sudoku);
     
