@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <map>
 
 template <typename T>
 void printVector(std::vector<T> v){
@@ -12,10 +13,7 @@ void printVector(std::vector<T> v){
 
 template <typename T>
 void print2DVector(std::vector<std::vector<T> > vv){
-  for(std::vector<T> v: vv){
-    for(T i : v){
-      std::cout<<i<<" ";
-    }
-    std::cout<<std::endl;
-  }
+     for(std::vector<T> v: vv){
+	  printVector(v);
+     }
 }
